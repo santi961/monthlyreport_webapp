@@ -3,13 +3,17 @@ from smartsheet_dataframe import get_report_as_df
 import streamlit as st
 import tempfile
 import os
+import io
 
 st.set_page_config(layout="wide")
-st.markdown("<h1 style='text-align: center'>Monthly Report</h1><br><br>", unsafe_allow_html=True)
+#st.markdown("<h1 style='text-align: center'>Monthly Report</h1><br><br>", unsafe_allow_html=True)
 
 dirpath = tempfile.mkdtemp()
 excel_filename = "Monthly_Report.xlsx"
 excel_file_path = os.path.join(dirpath,excel_filename)
+excel_file_path = in_memory_fp = io.BytesIO()
+#excel_file_path = "Downloads\Monthly_Report.xlsx"
+#excel_file_path = 'D:/Users/Santi/Downloads/Monthly_Report_Test_13.xlsx'
 
 def grab_monthly_report():
     global excel_file_path
@@ -18,7 +22,6 @@ def grab_monthly_report():
 
     MonthlyDF = get_report_as_df(token=ACCESS_TOKEN,report_id=MonthlyID)
     # Path to the Excel file
-    #excel_file_path = 'D:/Users/Santi/Downloads/Monthly_Report_Test_12.xlsx'
 
     # Name of the sheet containing the data
     sheet_name = 'Monthly Report'
@@ -77,4 +80,15 @@ def grab_monthly_report():
 
 grab_monthly_report()
 
-st.download_button(label="Download Monthly Report",data=excel_file_path,file_name="Monthly_Report.xlsx",mime='text/csv')
+col1, col2, col3 , col4, col5 = st.columns(5)
+
+with col1:
+    pass
+with col2:
+    pass
+with col4:
+    pass
+with col5:
+    pass
+with col3 :
+    st.download_button(label="Download Monthly Report",data=excel_file_path,file_name="Monthly_Report.xlsx",mime='text/csv')
