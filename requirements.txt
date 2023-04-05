@@ -1,3 +1,4 @@
 pandas
 smartsheet_dataframe
 streamlit
+openpyxl
