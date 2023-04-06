@@ -4,19 +4,33 @@ import streamlit as st
 import tempfile
 import os
 import io
+from tkinter import *
+from tkinter.filedialog import asksaveasfilename
 
 st.set_page_config(layout="wide")
 #st.markdown("<h1 style='text-align: center'>Monthly Report</h1><br><br>", unsafe_allow_html=True)
 
-dirpath = tempfile.mkdtemp()
-excel_filename = "Monthly_Report.xlsx"
-excel_file_path = os.path.join(dirpath,excel_filename)
-excel_file_path = in_memory_fp = io.BytesIO()
+#dirpath = tempfile.mkdtemp()
+#excel_filename = "Monthly_Report.xlsx"
+#excel_file_path = os.path.join(dirpath,excel_filename)
+#excel_file_path = in_memory_fp = io.BytesIO()
 #excel_file_path = "Downloads\Monthly_Report.xlsx"
 #excel_file_path = 'D:/Users/Santi/Downloads/Monthly_Report_Test_13.xlsx'
+#excel_file_path = 'D:/Users/Santi/Documents/Brand Brigade/BB_Programs/Monthly_Report3.xlsx'
+
+from tkinter import filedialog
+from tkinter import *
+
+# root = Tk()
+# def save():
+#     files = [('All Files', '*.*'), 
+#              ('Python Files', '*.py'),
+#              ('Text Document', '*.txt')]
+#     root.file = filedialog.asksaveasfile(filetypes = files, defaultextension = files)
+# save()
 
 def grab_monthly_report():
-    global excel_file_path
+    global excel_file_path, writer
     ACCESS_TOKEN = 'r84vLFkD7bYJaE3eXaSB3Z8mWwD4wgTm3zucM'
     MonthlyID = '4734175795275652'
 
@@ -44,7 +58,8 @@ def grab_monthly_report():
 
     def highlight_aired(row):
         value = row.loc['Game Result']
-        if value in aired_list:
+        op_value = row.loc['How Would you Rate the Quality of the Game?']
+        if value in aired_list or op_value in aired_list:
             color = '#BAFFC9' # Red
         else:
             color = 'None' # Blue
@@ -78,17 +93,60 @@ def grab_monthly_report():
 
 #excel_file.style.set_properties(**{'color':'black'})
 
-grab_monthly_report()
+#grab_monthly_report()
+
+from tkinter.filedialog import asksaveasfilename
+from tkinter import *
+
+
+# def save_file():
+#    global f
+#    win= Tk()
+#    f = asksaveasfile(initialfile = 'Untitled.txt', defaultextension=".txt",filetypes=[("All Files","*.*"),("Text Documents","*.txt")])
+#    win.mainloop()
+
+
+
+root = Tk()
+root.withdraw()
+root.attributes("-topmost", True)
+
+def select_folder():
+    global excel_file_path
+    folder_selected = filedialog.asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
+defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
+    excel_file_path = folder_selected
+    #excel_file_path = os.path.join(folder_selected,excel_filename)
+
+#select_folder()
+
+def make_report():
+    select_folder()
+    if excel_file_path:
+        grab_monthly_report()
+        with col3:
+            st.markdown('Downloaded')
+
+#grab_monthly_report()
+
+#make_report()
+
+import streamlit.components.v1 as components
+
+# embed streamlit docs in a streamlit app
+components.iframe("https://app.smartsheet.com/b/publish?EQBCT=04ddab69560e4685857be8e772dfc018",height=700,scrolling=True)
 
 col1, col2, col3 , col4, col5 = st.columns(5)
-
 with col1:
     pass
 with col2:
     pass
-with col4:
-    pass
 with col5:
     pass
-with col3 :
-    st.download_button(label="Download Monthly Report",data=excel_file_path,file_name="Monthly_Report.xlsx",mime='text/csv')
+with col4:
+    pass
+with col3:
+    if st.button('Download Monthly Report'):
+        make_report()
+    else:
+        pass
