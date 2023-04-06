@@ -3,6 +3,7 @@ from smartsheet_dataframe import get_report_as_df
 import streamlit as st
 from tkinter.filedialog import asksaveasfilename
 import streamlit.components.v1 as components
+import os
 
 st.set_page_config(layout="wide")
 
@@ -71,10 +72,12 @@ root.withdraw()
 root.attributes("-topmost", True)
 
 def select_folder():
-    global excel_file_path
-    folder_selected = filedialog.asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
-defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
-    excel_file_path = folder_selected
+    global dl_file,dl_loc,excel_file_path
+#     global excel_file_path
+#     folder_selected = filedialog.asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
+# defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
+#     excel_file_path = folder_selected
+    excel_file_path = os.path.join(dl_loc,dl_file)
 
 def make_report():
     select_folder()
@@ -96,6 +99,8 @@ with col5:
 with col4:
     pass
 with col3:
+    dl_loc = st.text_input('Input Download Location','')
+    dl_file = "Monthly_Report.xlsx"
     if st.button('Download Monthly Report'):
         make_report()
     else:
