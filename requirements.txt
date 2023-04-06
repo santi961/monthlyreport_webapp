@@ -1,4 +1,4 @@
 pandas==1.5.2
 smartsheet_dataframe==0.2.0
 streamlit==1.19.0
-libtk==8.6
+tk
