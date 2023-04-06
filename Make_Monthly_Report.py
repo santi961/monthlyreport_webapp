@@ -1,14 +1,13 @@
 import pandas as pd
 from smartsheet_dataframe import get_report_as_df
 import streamlit as st
+from tkinter import Tk
 from tkinter.filedialog import asksaveasfilename
 import streamlit.components.v1 as components
 import os
 
 st.set_page_config(layout="wide")
 
-from tkinter import filedialog
-from tkinter import *
 
 def grab_monthly_report():
     global excel_file_path, writer
@@ -66,15 +65,17 @@ def grab_monthly_report():
             pass
     # Save the changes to the Excel file
     writer.close()
-
-root = Tk()
-root.withdraw()
-root.attributes("-topmost", True)
+    
+#Tkinter is desktop GUI which can't be used on server
+# root = Tk()
+# root.withdraw()
+# root.attributes("-topmost", True)
 
 def select_folder():
     global dl_file,dl_loc,excel_file_path
+    #Tkinter is desktop GUI which can't be used on server
 #     global excel_file_path
-#     folder_selected = filedialog.asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
+#     folder_selected = asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
 # defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
 #     excel_file_path = folder_selected
     excel_file_path = os.path.join(dl_loc,dl_file)
