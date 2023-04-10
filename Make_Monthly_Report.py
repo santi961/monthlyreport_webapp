@@ -31,9 +31,9 @@ def grab_monthly_report():
     excel_file["Date"] = pd.to_datetime(excel_file['Date'])
     excel_file['Date'] = excel_file['Date'].dt.strftime('%m/%d/%Y')
 
-    good_list = ["AIRED","6","7","8"]
-    ok_list = ["4","5"]
-    bad_list = ["DIDN'T AIR","1","2","3"]
+    good_list = ["AIRED",6,7,8]
+    ok_list = [4,5]
+    bad_list = ["DIDN'T AIR",1,2,3]
 
     def highlight_aired(row):
         value = row.loc['Game Result']
@@ -41,13 +41,12 @@ def grab_monthly_report():
         if value in good_list or op_value in good_list and not value:
             color = '#BAFFC9' #Green
         elif value in ok_list or op_value in ok_list and not value:
-            color = '#fdffba'
+            color = '#fdffba' #Yellow
         elif value in bad_list or op_value in bad_list and not value:
-            color = '#ffbaba'
+            color = '#ffbaba' #Red
         else:
             color = 'None'
         return ['background-color: {}'.format(color) for r in row]
-
 
     # Get the unique values in the specified column
     unique_values = excel_file[group_by_column].unique()
@@ -71,20 +70,20 @@ def grab_monthly_report():
             pass
     # Save the changes to the Excel file
     writer.close()
-    
+
 #Tkinter is desktop GUI which can't be used on server
-# root = Tk()
-# root.withdraw()
-# root.attributes("-topmost", True)
+root = Tk()
+root.withdraw()
+root.attributes("-topmost", True)
 
 def select_folder():
-    global dl_file,dl_loc,excel_file_path
+    #global dl_file,dl_loc,excel_file_path
     #Tkinter is desktop GUI which can't be used on server
-#     global excel_file_path
-#     folder_selected = asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
-# defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
-#     excel_file_path = folder_selected
-    excel_file_path = os.path.join(dl_loc,dl_file)
+    global excel_file_path
+    folder_selected = asksaveasfilename(initialfile = 'Monthly_Report.xlsx',
+defaultextension=".xlsx",filetypes=[("Excel File","*.xlsx")],parent=root)
+    excel_file_path = folder_selected
+    #excel_file_path = os.path.join(dl_loc,dl_file)
 
 def make_report():
     select_folder()
@@ -106,7 +105,7 @@ with col5:
 with col4:
     pass
 with col3:
-    dl_loc = st.text_input('Input Download Location','')
+    #dl_loc = st.text_input('Input Download Location','')
     dl_file = "Monthly_Report.xlsx"
     if st.button('Download Monthly Report'):
         make_report()
