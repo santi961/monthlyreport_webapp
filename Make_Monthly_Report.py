@@ -31,15 +31,21 @@ def grab_monthly_report():
     excel_file["Date"] = pd.to_datetime(excel_file['Date'])
     excel_file['Date'] = excel_file['Date'].dt.strftime('%m/%d/%Y')
 
-    aired_list = ["AIRED","1","2","3","4","5","6","7","8"]
+    good_list = ["AIRED","6","7","8"]
+    ok_list = ["4","5"]
+    bad_list = ["DIDN'T AIR","1","2","3"]
 
     def highlight_aired(row):
         value = row.loc['Game Result']
         op_value = row.loc['How Would you Rate the Quality of the Game?']
-        if value in aired_list or op_value in aired_list:
-            color = '#BAFFC9' # Red
+        if value in good_list or op_value in good_list and not value:
+            color = '#BAFFC9' #Green
+        elif value in ok_list or op_value in ok_list and not value:
+            color = '#fdffba'
+        elif value in bad_list or op_value in bad_list and not value:
+            color = '#ffbaba'
         else:
-            color = 'None' # Blue
+            color = 'None'
         return ['background-color: {}'.format(color) for r in row]
 
 
